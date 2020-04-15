@@ -6,9 +6,12 @@
 </button>
 
 <section>
-  <ul class="list-group">
+  <div *ngIf="tasks.length == 0" class="alert alert-waring" role="alert">
+    Nenhuma tarefa foi cadastrada ainda.
+  </div>
+  <ul class="list-group" *ngIf="tasks.length > 0">
     <li class="list-group-item" *ngFor="let task of tasks">
-      <app-task-list-item [task]="task" class="task-item"></app-task-list-item>
+      <app-task-list-item [task]="task" class="task-item"(onDeleteTask="onTaskDeleted($event")></app-task-list-item>
   </li>
 </ul>
 </section>

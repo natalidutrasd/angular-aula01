@@ -1,6 +1,8 @@
 import { TaskService } from './../shared/task.service';
 import { Task } from './../shared/task';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+
+
 
 @Component({
   selector: 'app-task-list-item',
@@ -11,6 +13,10 @@ export class TaskListItemComponent implements OnInit {
   @Input()
   task: Task;
 
+  // tslint:disable-next-line: no-output-on-prefix
+  @Output()
+ onDeleteTask = new EventEmitter();
+
 
   constructor(private taskService: TaskService) { }
 
@@ -18,12 +24,16 @@ export class TaskListItemComponent implements OnInit {
   }
 
   remove(task: Task) {
-    this.taskService.delete(task._id);
+    this.taskService.delete(task._id).subscribe(() => {
+      this.onDeleteTask.emit(task);
+    });
 
   }
 
   onCompletedCheckChange(task: Task) {
-    this.taskService.save(task);
+    this.taskService.save(task).subscribe(task => {
+      console.log(task);
+    });
   }
 
 }
